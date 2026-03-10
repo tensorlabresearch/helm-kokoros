@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 
-FROM nvidia/cuda:12.4.1-cudnn-devel-ubuntu22.04 AS builder
+FROM nvidia/cuda:12.6.3-cudnn-devel-ubuntu24.04 AS builder
 
 ARG RUST_VERSION=1.88.0
 
@@ -26,7 +26,7 @@ WORKDIR /src
 RUN git clone --depth 1 https://github.com/aigentic-net/kokoros.git .
 RUN cargo build --release -p koko --features kokoros/cuda
 
-FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04 AS runtime
+FROM nvidia/cuda:12.6.3-cudnn-runtime-ubuntu24.04 AS runtime
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
