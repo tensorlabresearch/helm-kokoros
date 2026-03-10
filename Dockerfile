@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 
-FROM nvidia/cuda:12.6.3-cudnn-devel-ubuntu24.04 AS builder
+FROM ubuntu:22.04 AS builder
 
 ARG RUST_VERSION=1.88.0
 
@@ -21,12 +21,13 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
     | sh -s -- -y --default-toolchain "${RUST_VERSION}" --profile minimal
 
 ENV PATH="/root/.cargo/bin:${PATH}"
+ENV RUSTFLAGS="-C target-cpu=x86-64"
 WORKDIR /src
 
 RUN git clone --depth 1 https://github.com/aigentic-net/kokoros.git .
-RUN cargo build --release -p koko --features kokoros/cuda
+RUN cargo +"${RUST_VERSION}" build --release -p koko
 
-FROM nvidia/cuda:12.6.3-cudnn-runtime-ubuntu24.04 AS runtime
+FROM ubuntu:22.04 AS runtime
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \

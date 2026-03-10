@@ -6,7 +6,7 @@ Helm chart wrapper for the [Kokoros project](https://github.com/aigentic-net/kok
 
 - OCI chart (primary): `oci://ghcr.io/tensorlabresearch/charts/kokoros`
 - GitHub Pages chart repo (mirror): `https://tensorlabresearch.github.io/helm-kokoros`
-- Container image: `docker.io/mechaminds/kokoros`
+- Container image: `ghcr.io/tensorlabresearch/kokoros`
 
 ## Install
 
@@ -14,7 +14,7 @@ Helm chart wrapper for the [Kokoros project](https://github.com/aigentic-net/kok
 
 ```bash
 helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
-  --version 0.1.2
+  --version 0.1.3
 ```
 
 ### From GitHub Pages index
@@ -22,7 +22,7 @@ helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
 ```bash
 helm repo add tensorlab-kokoros https://tensorlabresearch.github.io/helm-kokoros
 helm repo update
-helm install kokoros tensorlab-kokoros/kokoros --version 0.1.2
+helm install kokoros tensorlab-kokoros/kokoros --version 0.1.3
 ```
 
 ## Quickstart Values
@@ -53,7 +53,7 @@ Install with:
 
 ```bash
 helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
-  --version 0.1.2 \
+  --version 0.1.3 \
   -f values-preload.yaml
 ```
 
@@ -66,7 +66,7 @@ helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
 
 ## Release model
 
-- Push a semver Git tag like `v0.1.0` to build/publish the CUDA image to Docker Hub.
+- Push a semver Git tag like `v0.1.0` to build/publish the image to GHCR.
 - Merge chart changes to `main` with bumped `charts/kokoros/Chart.yaml` version.
 - `chart-release.yml` will lint/template, publish index/releases to `gh-pages`, and push changed chart packages to GHCR OCI.
 
