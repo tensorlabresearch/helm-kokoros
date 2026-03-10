@@ -25,6 +25,45 @@ helm repo update
 helm install kokoros tensorlab-kokoros/kokoros --version 0.1.0
 ```
 
+## Quickstart Values
+
+Create a values override that selects a bundle and preloads extra assets:
+
+```yaml
+gpu:
+  enabled: true
+  count: 1
+  resourceKey: nvidia.com/gpu
+
+kokoros:
+  activeBundle: default
+
+modelPreload:
+  enabled: true
+  continueOnError: false
+  items:
+    - id: alt-voices
+      url: https://example.com/models/voices-custom.bin
+      filename: voices-custom.bin
+      targetSubdir: data
+      sha256: ""
+```
+
+Install with:
+
+```bash
+helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
+  --version 0.1.0 \
+  -f values-preload.yaml
+```
+
+## Argo CD Examples
+
+- Pages chart repo app: `examples/argocd/pages-application.yaml`
+- OCI chart repo app:
+  - repository secret: `examples/argocd/oci-repository-secret.yaml`
+  - application: `examples/argocd/oci-application.yaml`
+
 ## Release model
 
 - Push a semver Git tag like `v0.1.0` to build/publish the CUDA image to GHCR.

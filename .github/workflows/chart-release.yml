@@ -22,7 +22,7 @@ jobs:
         uses: azure/setup-helm@v4
 
       - name: Helm lint
-        run: helm lint charts/kokoros
+        run: helm lint --strict charts/kokoros
 
       - name: Helm template (default values)
         run: helm template kokoros charts/kokoros > /tmp/kokoros-default.yaml
@@ -55,6 +55,13 @@ jobs:
                     sha256: ""
           YAML
           helm template kokoros charts/kokoros -f /tmp/kokoros-preload-values.yaml > /tmp/kokoros-preload.yaml
+
+      - name: Validate rendered preload and GPU manifests
+        run: |
+          grep -q "initContainers:" /tmp/kokoros-preload.yaml
+          grep -q "sha256sum -c -" /tmp/kokoros-preload.yaml
+          grep -q "nvidia.com/gpu" /tmp/kokoros-default.yaml
+          grep -q "openai" /tmp/kokoros-default.yaml
 
   release:
     runs-on: ubuntu-latest

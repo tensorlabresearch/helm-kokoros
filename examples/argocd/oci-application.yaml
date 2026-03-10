@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kokoros-oci
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kokoros
+  source:
+    repoURL: ghcr.io/tensorlabresearch/charts
+    chart: kokoros
+    targetRevision: 0.1.0
+    helm:
+      values: |
+        gpu:
+          enabled: true
+          count: 1
+          resourceKey: nvidia.com/gpu
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
