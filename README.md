@@ -14,7 +14,7 @@ Helm chart wrapper for the [Kokoros project](https://github.com/aigentic-net/kok
 
 ```bash
 helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
-  --version 0.1.5
+  --version 0.1.6
 ```
 
 ### From GitHub Pages index
@@ -22,7 +22,7 @@ helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
 ```bash
 helm repo add tensorlab-kokoros https://tensorlabresearch.github.io/helm-kokoros
 helm repo update
-helm install kokoros tensorlab-kokoros/kokoros --version 0.1.5
+helm install kokoros tensorlab-kokoros/kokoros --version 0.1.6
 ```
 
 ## Quickstart Values
@@ -53,7 +53,7 @@ Install with:
 
 ```bash
 helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
-  --version 0.1.5 \
+  --version 0.1.6 \
   -f values-preload.yaml
 ```
 

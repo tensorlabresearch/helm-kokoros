@@ -40,6 +40,10 @@ jobs:
           tags: |
             ghcr.io/tensorlabresearch/kokoros:${{ github.ref_name }}
             ghcr.io/tensorlabresearch/kokoros:sha-${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.url=https://github.com/${{ github.repository }}
+            org.opencontainers.image.title=kokoros
 
       - name: Ensure GHCR image package is public
         if: steps.build.outcome == 'success'
