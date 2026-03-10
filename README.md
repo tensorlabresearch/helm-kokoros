@@ -14,7 +14,7 @@ Helm chart and CUDA image pipeline for Kokoros in the `tensorlabresearch` organi
 
 ```bash
 helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
-  --version 0.1.0
+  --version 0.1.1
 ```
 
 ### From GitHub Pages index
@@ -22,7 +22,7 @@ helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
 ```bash
 helm repo add tensorlab-kokoros https://tensorlabresearch.github.io/helm-kokoros
 helm repo update
-helm install kokoros tensorlab-kokoros/kokoros --version 0.1.0
+helm install kokoros tensorlab-kokoros/kokoros --version 0.1.1
 ```
 
 ## Quickstart Values
@@ -53,7 +53,7 @@ Install with:
 
 ```bash
 helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
-  --version 0.1.0 \
+  --version 0.1.1 \
   -f values-preload.yaml
 ```
 
