@@ -2,6 +2,29 @@ apiVersion: v1
 entries:
   kokoros:
   - apiVersion: v2
+    appVersion: v0.1.3
+    created: "2026-03-10T03:00:03.380124015Z"
+    description: CUDA-first Helm chart for Kokoros OpenAI-compatible TTS with model
+      preloading
+    digest: 4b2fee3297295c559ccb7bbfaac30b71fb01df69caaa47d2c9f81dc9e8602774
+    home: https://github.com/tensorlabresearch/helm-kokoros
+    icon: https://raw.githubusercontent.com/cncf/artwork/main/projects/helm/icon/color/helm-icon-color.png
+    keywords:
+    - kokoro
+    - tts
+    - openai
+    - cuda
+    maintainers:
+    - name: tensorlabresearch
+    name: kokoros
+    sources:
+    - https://github.com/aigentic-net/kokoros
+    - https://github.com/tensorlabresearch/helm-kokoros
+    type: application
+    urls:
+    - https://github.com/tensorlabresearch/helm-kokoros/releases/download/kokoros-0.1.1/kokoros-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     appVersion: v0.1.0
     created: "2026-03-10T01:38:38.295190425Z"
     description: CUDA-first Helm chart for Kokoros OpenAI-compatible TTS with model
@@ -24,4 +47,4 @@ entries:
     urls:
     - https://github.com/tensorlabresearch/helm-kokoros/releases/download/kokoros-0.1.0/kokoros-0.1.0.tgz
     version: 0.1.0
-generated: "2026-03-10T01:38:38.295200006Z"
+generated: "2026-03-10T03:00:03.380134026Z"
