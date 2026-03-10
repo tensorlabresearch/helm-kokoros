@@ -1,12 +1,12 @@
 # helm-kokoros
 
-Helm chart and CUDA image pipeline for Kokoros in the `tensorlabresearch` organization.
+Helm chart wrapper for the [Kokoros project](https://github.com/aigentic-net/kokoros), maintained in the `tensorlabresearch` organization.
 
 ## What this repo publishes
 
 - OCI chart (primary): `oci://ghcr.io/tensorlabresearch/charts/kokoros`
 - GitHub Pages chart repo (mirror): `https://tensorlabresearch.github.io/helm-kokoros`
-- Container image: `ghcr.io/tensorlabresearch/kokoros`
+- Container image: `docker.io/mechaminds/kokoros`
 
 ## Install
 
@@ -66,7 +66,7 @@ helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
 
 ## Release model
 
-- Push a semver Git tag like `v0.1.0` to build/publish the CUDA image to GHCR.
+- Push a semver Git tag like `v0.1.0` to build/publish the CUDA image to Docker Hub.
 - Merge chart changes to `main` with bumped `charts/kokoros/Chart.yaml` version.
 - `chart-release.yml` will lint/template, publish index/releases to `gh-pages`, and push changed chart packages to GHCR OCI.
 
@@ -75,4 +75,4 @@ helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
 - Default chart values assume CUDA and request `nvidia.com/gpu: 1`.
 - Model files are preloaded via init container to a persistent models volume.
 - Checksums are supported and enforced when provided.
-- If OCI pulls return `403`, set GHCR package visibility to public for `kokoros` and `charts/kokoros` in the `tensorlabresearch` org packages settings.
+- If OCI chart pulls return `403`, set GHCR package visibility to public for `charts/kokoros` in the `tensorlabresearch` org packages settings.
