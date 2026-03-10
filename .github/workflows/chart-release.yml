@@ -1,0 +1,117 @@
+name: Chart Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+
+      - name: Helm lint
+        run: helm lint charts/kokoros
+
+      - name: Helm template (default values)
+        run: helm template kokoros charts/kokoros > /tmp/kokoros-default.yaml
+
+      - name: Helm template (preload-heavy values)
+        run: |
+          cat > /tmp/kokoros-preload-values.yaml <<'YAML'
+          gpu:
+            enabled: false
+          modelPreload:
+            enabled: true
+            continueOnError: false
+            items:
+              - id: custom-model
+                url: https://example.com/model.bin
+                filename: model.bin
+                targetSubdir: custom
+                sha256: ""
+          kokoros:
+            activeBundle: default
+            bundles:
+              - name: default
+                modelPath: checkpoints/kokoro-v1.0.onnx
+                voicesPath: data/voices-v1.0.bin
+                preload:
+                  - id: bundle-model
+                    url: https://example.com/bundle-model.onnx
+                    filename: bundle-model.onnx
+                    targetSubdir: checkpoints
+                    sha256: ""
+          YAML
+          helm template kokoros charts/kokoros -f /tmp/kokoros-preload-values.yaml > /tmp/kokoros-preload.yaml
+
+  release:
+    runs-on: ubuntu-latest
+    needs: validate
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+
+      - name: Login to GHCR for OCI chart push
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io \
+            --username "${{ github.actor }}" \
+            --password-stdin
+
+      - name: Run chart releaser (GitHub Releases + gh-pages index)
+        id: cr
+        uses: helm/chart-releaser-action@v1.7.0
+        with:
+          charts_dir: charts
+          skip_existing: true
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Push changed charts to GHCR OCI
+        if: steps.cr.outputs.changed_charts != ''
+        run: |
+          set -euo pipefail
+          changed="${{ steps.cr.outputs.changed_charts }}"
+          IFS=',' read -r -a charts <<< "$changed"
+
+          for chart in "${charts[@]}"; do
+            chart="${chart// /}"
+            version="$(awk '/^version:/ {print $2; exit}' "charts/${chart}/Chart.yaml")"
+            package=".cr-release-packages/${chart}-${version}.tgz"
+
+            if [ ! -f "$package" ]; then
+              helm package "charts/${chart}" --destination .cr-release-packages
+            fi
+
+            helm push "$package" oci://ghcr.io/tensorlabresearch/charts
+            echo "Pushed ${chart}:${version} to GHCR OCI"
+          done
+
+      - name: Release summary
+        run: |
+          {
+            echo "### Chart Release"
+            echo ""
+            echo "- Changed charts: \`${{ steps.cr.outputs.changed_charts }}\`"
+            echo "- Version: \`${{ steps.cr.outputs.chart_version }}\`"
+            echo "- OCI base: \`oci://ghcr.io/tensorlabresearch/charts\`"
+            echo "- Pages repo: \`https://tensorlabresearch.github.io/helm-kokoros\`"
+          } >> "$GITHUB_STEP_SUMMARY"

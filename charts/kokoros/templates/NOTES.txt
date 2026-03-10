@@ -1,0 +1,10 @@
+Kokoros has been deployed.
+
+- Service: {{ include "kokoros.fullname" . }}
+- Namespace: {{ .Release.Namespace }}
+- Port: {{ .Values.service.port }}
+
+To test from within the cluster:
+
+  kubectl run curl --rm -it --restart=Never --image=curlimages/curl:8.10.1 -- \
+    curl -fsS http://{{ include "kokoros.fullname" . }}:{{ .Values.service.port }}/

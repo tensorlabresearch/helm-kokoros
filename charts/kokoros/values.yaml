@@ -1,0 +1,108 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/tensorlabresearch/kokoros
+  tag: "v0.1.0"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+containerSecurityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  runAsNonRoot: true
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false
+
+service:
+  type: ClusterIP
+  port: 3000
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 1Gi
+  limits:
+    cpu: "2"
+    memory: 4Gi
+
+gpu:
+  enabled: true
+  count: 1
+  resourceKey: nvidia.com/gpu
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+persistence:
+  models:
+    enabled: true
+    existingClaim: ""
+    size: 50Gi
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    mountPath: /models
+    readOnly: true
+
+modelPreload:
+  enabled: true
+  continueOnError: false
+  image:
+    repository: alpine
+    tag: "3.20"
+    pullPolicy: IfNotPresent
+  items: []
+
+kokoros:
+  logLevel: info
+  instances: 2
+  activeBundle: default
+  extraArgs: []
+  env: []
+  bundles:
+    - name: default
+      modelPath: checkpoints/kokoro-v1.0.onnx
+      voicesPath: data/voices-v1.0.bin
+      preload:
+        - id: kokoro-onnx-model
+          url: https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX/resolve/main/onnx/model.onnx
+          filename: kokoro-v1.0.onnx
+          targetSubdir: checkpoints
+          sha256: ""
+        - id: kokoro-voices-bin
+          url: https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin
+          filename: voices-v1.0.bin
+          targetSubdir: data
+          sha256: ""
+
+probes:
+  startup:
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 60
+  readiness:
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+  liveness:
+    initialDelaySeconds: 30
+    periodSeconds: 15
+    timeoutSeconds: 5
+    failureThreshold: 6

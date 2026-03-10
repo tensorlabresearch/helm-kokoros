@@ -1,0 +1,17 @@
+apiVersion: v2
+name: kokoros
+description: CUDA-first Helm chart for Kokoros OpenAI-compatible TTS with model preloading
+home: https://github.com/tensorlabresearch/helm-kokoros
+type: application
+version: 0.1.0
+appVersion: "v0.1.0"
+keywords:
+  - kokoro
+  - tts
+  - openai
+  - cuda
+sources:
+  - https://github.com/aigentic-net/kokoros
+  - https://github.com/tensorlabresearch/helm-kokoros
+maintainers:
+  - name: tensorlabresearch
