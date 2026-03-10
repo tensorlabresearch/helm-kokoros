@@ -134,15 +134,15 @@ spec:
           args:
             - "--instances"
             - {{ .Values.kokoros.instances | quote }}
+            - "--model"
+            - {{ printf "%s/%s" .Values.persistence.models.mountPath $bundle.modelPath | quote }}
+            - "--data"
+            - {{ printf "%s/%s" .Values.persistence.models.mountPath $bundle.voicesPath | quote }}
             - "openai"
             - "--ip"
             - "0.0.0.0"
             - "--port"
             - {{ .Values.service.port | quote }}
-            - "--model"
-            - {{ printf "%s/%s" .Values.persistence.models.mountPath $bundle.modelPath | quote }}
-            - "--data"
-            - {{ printf "%s/%s" .Values.persistence.models.mountPath $bundle.voicesPath | quote }}
             {{- range .Values.kokoros.extraArgs }}
             - {{ . | quote }}
             {{- end }}

@@ -57,7 +57,7 @@ persistence:
     accessModes:
       - ReadWriteOnce
     mountPath: /models
-    readOnly: true
+    readOnly: false
 
 modelPreload:
   enabled: true

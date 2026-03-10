@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://tensorlabresearch.github.io/helm-kokoros
     chart: kokoros
-    targetRevision: 0.1.6
+    targetRevision: 0.1.7
     helm:
       values: |
         gpu:
