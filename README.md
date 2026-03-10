@@ -75,3 +75,4 @@ helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
 - Default chart values assume CUDA and request `nvidia.com/gpu: 1`.
 - Model files are preloaded via init container to a persistent models volume.
 - Checksums are supported and enforced when provided.
+- If OCI pulls return `403`, set GHCR package visibility to public for `kokoros` and `charts/kokoros` in the `tensorlabresearch` org packages settings.
