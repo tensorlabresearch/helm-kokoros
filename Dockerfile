@@ -31,6 +31,8 @@ FROM nvidia/cuda:12.6.3-cudnn-runtime-ubuntu24.04 AS runtime
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
+    espeak-ng \
+    espeak-ng-data \
     libssl3 \
     libsonic0 \
     libpcaudio0 \

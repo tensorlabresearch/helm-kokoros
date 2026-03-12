@@ -14,7 +14,7 @@ Helm chart wrapper for the [Kokoros project](https://github.com/aigentic-net/kok
 
 ```bash
 helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
-  --version 0.1.7
+  --version 0.1.8
 ```
 
 ### From GitHub Pages index
@@ -22,7 +22,7 @@ helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
 ```bash
 helm repo add tensorlab-kokoros https://tensorlabresearch.github.io/helm-kokoros
 helm repo update
-helm install kokoros tensorlab-kokoros/kokoros --version 0.1.7
+helm install kokoros tensorlab-kokoros/kokoros --version 0.1.8
 ```
 
 ## Quickstart Values
@@ -53,7 +53,7 @@ Install with:
 
 ```bash
 helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
-  --version 0.1.7 \
+  --version 0.1.8 \
   -f values-preload.yaml
 ```
 
@@ -75,4 +75,5 @@ helm install kokoros oci://ghcr.io/tensorlabresearch/charts/kokoros \
 - Default chart values assume CUDA and request `nvidia.com/gpu: 1`.
 - Model files are preloaded via init container to a persistent models volume.
 - Checksums are supported and enforced when provided.
+- Runtime image includes `espeak-ng` data required for speech synthesis.
 - If OCI chart pulls return `403`, set GHCR package visibility to public for `charts/kokoros` in the `tensorlabresearch` org packages settings.
